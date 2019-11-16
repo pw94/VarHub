@@ -24,6 +24,9 @@ def download_plans():
                 plan = requests.get("https://junction-planreview.azurewebsites.net/api/patients/" + id + "/plans/" + plan_id).json()
                 plans.insert_one(plan)
 
+def get_patients():
+    return db.patients.find({})
+
 def download():
     download_patients()
     download_plans()

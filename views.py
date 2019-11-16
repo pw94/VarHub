@@ -6,8 +6,9 @@ from wtforms import StringField, PasswordField
 from wtforms.validators import Email, Length, InputRequired
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from datetime import datetime
 
-from data_downloader import download
+from data_downloader import download, get_patients
 
 appConfig = ConfigParser()
 appConfig.read("config.ini")
@@ -72,12 +73,12 @@ def login():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('index.html', name=current_user.email)
+    return render_template('tables.html', patients=get_patients(), now=datetime.utcnow().date())
 
 @app.route('/tables')
 @login_required
 def tables():
-    return render_template('tables.html')
+    return render_template('tables.html', patients=get_patients(), now=datetime.utcnow().date())
 
 @app.route('/')
 def index():
