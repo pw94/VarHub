@@ -27,6 +27,9 @@ def download_plans():
 def get_patients():
     return db.patients.find({})
 
+def get_patient(id):
+    return db.patients.find_one({'Id': id})
+
 def download():
     download_patients()
     download_plans()

@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from datetime import datetime
 
-from data_downloader import download, get_patients
+from data_downloader import download, get_patients, get_patient
 
 appConfig = ConfigParser()
 appConfig.read("config.ini")
@@ -53,7 +53,7 @@ def register():
                 hashpass = generate_password_hash(form.password.data, method='sha256')
                 hey = User(form.email.data,hashpass).save()
                 login_user(hey)
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('tables'))
     return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -67,13 +67,13 @@ def login():
             if check_user:
                 if check_password_hash(check_user['password'], form.password.data):
                     login_user(check_user)
-                    return redirect(url_for('dashboard'))
+                    return redirect(url_for('tables'))
     return render_template('login.html', form=form)
 
-@app.route('/dashboard')
+@app.route('/dashboard/<id>')
 @login_required
-def dashboard():
-    return render_template('tables.html', patients=get_patients(), now=datetime.utcnow().date())
+def dashboard(id):
+    return render_template('index.html', patient=get_patient(id))
 
 @app.route('/tables')
 @login_required
@@ -83,7 +83,7 @@ def tables():
 @app.route('/')
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('tables'))
     else:
         return redirect(url_for('login'))
 
