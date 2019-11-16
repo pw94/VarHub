@@ -1,7 +1,7 @@
 from configparser import ConfigParser
 from flask import Flask
 from flask_pymongo import PyMongo
-from data_downloader import download_patients
+from data_downloader import download
 
 appConfig = ConfigParser()
 appConfig.read("config.ini")
@@ -11,7 +11,7 @@ app.secret_key = appConfig.get("CoreContext", "secret_key")
 app.config["MONGO_URI"] = appConfig.get("CoreContext", "mongo")
 mongo = PyMongo(app)
 
-download_patients()
+download()
 
 if __name__ == "__main__":
     app.run()
