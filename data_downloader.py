@@ -30,6 +30,9 @@ def get_patients():
 def get_patient(id):
     return db.patients.find_one({'Id': id})
 
+def get_patient_plans_ids(id):
+    return [plan['Id'] for plan in db.patients.find_one({'Id': id})['Plans']]
+
 def download():
     download_patients()
     download_plans()

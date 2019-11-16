@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from datetime import datetime
 
-from data_downloader import download, get_patients, get_patient
+from data_downloader import download, get_patients, get_patient, get_patient_plans_ids
 
 appConfig = ConfigParser()
 appConfig.read("config.ini")
@@ -73,7 +73,7 @@ def login():
 @app.route('/dashboard/<id>')
 @login_required
 def dashboard(id):
-    return render_template('index.html', patient=get_patient(id))
+    return render_template('index.html', patient=get_patient(id), plans=get_patient_plans_ids(id))
 
 @app.route('/tables')
 @login_required
@@ -96,7 +96,6 @@ def forgot_password():
 def logout():
     logout_user()
     return redirect(url_for('login'))
-
 
 if __name__ == "__main__":
     app.run()
