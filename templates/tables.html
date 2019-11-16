@@ -7,7 +7,7 @@
 {% block content %}
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Patients table</h1>
+          <h1 class="h3 mb-2 text-gray-800">Patients</h1>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
@@ -20,7 +20,7 @@
                       <th>First Name</th>
                       <th>Last Name</th>
                       <th>Start date</th>
-                      <th>Last modification</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -29,7 +29,7 @@
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Start date</th>
-                        <th>Last modification</th>
+                        <th></th>
                     </tr>
                   </tfoot>
                   <tbody>
@@ -38,8 +38,8 @@
                       <td>{{patient.Id}}</td>
                       <td>{{patient.FirstName}}</td>
                       <td>{{patient.LastName}}</td>
-                      <td>2011/07/25</td>
                       <td>{{ now }}</td>
+                      <td><a href="/dashboard/{{ patient.Id }}">Details</a></td>
                     </tr>
                     {% endfor %}
                   </tbody>
