@@ -1,4 +1,5 @@
 install Python 3.8
+and then
 ```
 pip install -r requirements.txt
 ```
