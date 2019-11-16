@@ -40,7 +40,7 @@ class RegForm(FlaskForm):
     first_name = StringField('first_name', render_kw={'class' : 'form-control form-control-user', 'placeholder':"First Name"})
     last_name = StringField('last_name', render_kw={'class' : 'form-control form-control-user', 'placeholder':"Last Name"})
     email = StringField('email', render_kw={'class' : 'form-control form-control-user', 'placeholder':"Email Address"}, validators=[InputRequired(), Email(message='Invalid email'), Length(max=30)])
-    password = PasswordField('password', render_kw={'class' : 'form-control form-control-user', 'placeholder':"Password"}, validators=[InputRequired(), Length(min=8, max=20)])
+    password = PasswordField('password', render_kw={'class' : 'form-control form-control-user', 'placeholder':"Password"}, validators=[InputRequired(), Length(min=2, max=20)])
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -57,7 +57,7 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated == True:
+    if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     form = RegForm()
     if request.method == 'POST':
@@ -72,7 +72,19 @@ def login():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', name=current_user.email)
+    return render_template('index.html', name=current_user.email)
+
+@app.route('/tables')
+@login_required
+def tables():
+    return render_template('tables.html')
+
+@app.route('/')
+def index():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/forgot-password')
 def forgot_password():
