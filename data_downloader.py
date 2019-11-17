@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 import requests
+import json
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.var_hub
@@ -33,6 +34,16 @@ def get_patient(id):
 def get_patient_plans_ids(id):
     return [plan['Id'] for plan in db.patients.find_one({'Id': id})['Plans']]
 
+def put_test_to_db():
+    tests = db.tests
+    if tests.count_documents({}) == 0:
+        with open('tests.json', 'r') as infile:
+            data = json.loads(infile.read())
+            for datum in data:
+                if isinstance(datum, dict):
+                    tests.insert_many(datum)
+
 def download():
+    put_test_to_db()
     download_patients()
     download_plans()

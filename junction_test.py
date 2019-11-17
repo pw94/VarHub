@@ -1,16 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[352]:
-
 
 import requests
 import numpy as np
 import json
 from requests.exceptions import HTTPError
-
-
-# In[294]:
 
 
 def request_json(url):
@@ -25,42 +20,16 @@ def request_json(url):
         print(f'Other error occurred: {err}')  # Python 3.6
     return response.json()
 
-
-# In[324]:
-
-
-# Create the list for all the tests and the threshold values
-# Lungs
-Lungs = [
-    {'Metric': 'V30', 'Volume': 30, 'Per_Protocol': 20, 'Accept': 25},
-    {'Metric': 'V20', 'Volume': 20, 'Per_Protocol': 25, 'Accept': 30},
-    {'Metric': 'V10', 'Volume': 10, 'Per_Protocol': 40, 'Accept': 50},
-    {'Metric': 'V5', 'Volume': 5, 'Per_Protocol': 50, 'Accept': 55}]
-
-Heart = [{'Metric': 'V40', 'Volume': 40, 'Per_Protocol': 50, 'Accept': 55}]
-
-Kidneys = [{'Metric': 'V20', 'Volume': 20, 'Per_Protocol': 30, 'Accept': 40}]
-
-Liver =[{'Metric': 'V30', 'Volume': 30, 'Per_Protocol': 30, 'Accept': 40}]
-
-Spine =[{'Metric': 'V30', 'Volume': 30, 'Per_Protocol': 30, 'Accept': 40}]
-
-Bladder =[{'Metric': 'V30', 'Volume': 30, 'Per_Protocol': 20, 'Accept': 30}]
-
-
-# In[365]:
-
-
-main_url = 'https://junction-planreview.azurewebsites.net/api/patients'
-response = request_json(main_url)
-# Start with Abdomen data
-# for r in response:
-parent_url = main_url + '/'+ response[2] + '/plans'
-run_tests(parent_url, response[2])
-print(response[2])
-
-
-# In[364]:
+def test():
+    # Create the list for all the tests and the threshold values
+    # Lungs
+    
+    main_url = 'https://junction-planreview.azurewebsites.net/api/patients'
+    response = request_json(main_url)
+    # Start with Abdomen data
+    for r in response:
+        parent_url = main_url + '/'+ r + '/plans'
+        run_tests(parent_url, r)
 
 
 def run_tests(parent_url,patientID):
@@ -108,6 +77,21 @@ def run_tests(parent_url,patientID):
         #print(prescribed_th_vol(pairs,prescribed_dose))
     
         #dosage_vol_test(pairs,Lungs_Parameters[0])
+        Lungs = [
+        {'Metric': 'V30', 'Volume': 30, 'Per_Protocol': 20, 'Accept': 25},
+        {'Metric': 'V20', 'Volume': 20, 'Per_Protocol': 25, 'Accept': 30},
+        {'Metric': 'V10', 'Volume': 10, 'Per_Protocol': 40, 'Accept': 50},
+        {'Metric': 'V5', 'Volume': 5, 'Per_Protocol': 50, 'Accept': 55}]
+
+        Heart = [{'Metric': 'V40', 'Volume': 40, 'Per_Protocol': 50, 'Accept': 55}]
+
+        Kidneys = [{'Metric': 'V20', 'Volume': 20, 'Per_Protocol': 30, 'Accept': 40}]
+
+        Liver =[{'Metric': 'V30', 'Volume': 30, 'Per_Protocol': 30, 'Accept': 40}]
+
+        Spine =[{'Metric': 'V30', 'Volume': 30, 'Per_Protocol': 30, 'Accept': 40}]
+
+        Bladder =[{'Metric': 'V30', 'Volume': 30, 'Per_Protocol': 20, 'Accept': 30}]
         
         #For critical regions check that the dosage is within the specified region
         for crit in critical_region:
@@ -129,13 +113,6 @@ def run_tests(parent_url,patientID):
         json.dump(dic, write_file)
         
     
-    
-    
-
-
-# In[358]:
-
-
 #Test prescribed threshold volume
 # Check that the prescribed dose is reached by 95% volume for the region
 def target_volume_test(tar,vol_dose_pairs,planID,patientID):
@@ -168,13 +145,6 @@ def target_volume_test(tar,vol_dose_pairs,planID,patientID):
             
     return dic1,dic2
 
-
-    
-
-
-# In[333]:
-
-
 def critical_region_vol_test(threshold,map_vol, dose, patientID, planID):
     dic = []
     for th in threshold:
@@ -205,23 +175,4 @@ def crit_region(th, map_vol, dose, patientID, planID):
             'Verdict': verdict, 'Description': des})
             break;
     return dic
-
-
-# In[199]:
-
-
-
-
-
-# In[105]:
-
-
-
-                
-
-
-# In[ ]:
-
-
-
-
+    

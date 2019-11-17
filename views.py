@@ -7,12 +7,14 @@ from wtforms.validators import Email, Length, InputRequired
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from datetime import datetime
+from junction_test import test
 
 from data_downloader import download, get_patients, get_patient, get_patient_plans_ids
 
 appConfig = ConfigParser()
 appConfig.read("config.ini")
 
+test()
 download()
 
 app = Flask(__name__)
@@ -85,7 +87,7 @@ def dashboard(id):
 @app.route('/plan/<id>')
 @login_required
 def plan(id):
-    return render_template('plan.html', tests=[{'Id': 10, 'Name': 'Test3', 'Details': 'OK'}], comments=Comment.objects(plan_id=id), plan_id = id)
+    return render_template('plan.html', tests=[{'Id': 'Lung', 'Name': 'V95% > 90% of Dose', 'Details': '% difference:88.61 for Prescribed Dose: 56.0', 'plan_id': 'C1-IM107'}], comments=Comment.objects(plan_id=id), plan_id = id)
 
 @app.route('/new-comment/<plan_id>', methods=['POST'])
 @login_required
