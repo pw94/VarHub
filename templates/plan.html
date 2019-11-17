@@ -68,9 +68,9 @@
                             <tbody>
                               {% for test in comments %}
                               <tr>
-                                <td>{{test.Author}}</td>
-                                <td>{{test.Text}}</td>
-                                <td>{{test.Date}}</td>
+                                <td>{{test.author}}</td>
+                                <td>{{test.text}}</td>
+                                <td>{{test.date}}</td>
                               </tr>
                               {% endfor %}
                             </tbody>
@@ -78,6 +78,19 @@
                         </div>
                       </div>
                     </div>
+                    <h2 class="h5 mb-2 text-gray-800">Add comment</h2>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                      <div class="card-body">
+                        <form method="POST" action="/new-comment/{{plan_id}}">
+                          <div class="col-sm-6">
+                          <input class="form-control" name="text" type="text"></div>
+                          <div class="col-sm-6">
+                          <input class="btn btn-dark" type="submit" value="Add"></div>
+                        </form>
+                        </div>
+                        </div>
           {% endblock %}
 
           {% block scripts %}

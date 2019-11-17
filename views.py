@@ -33,6 +33,13 @@ class User(UserMixin, db.Document):
     email = db.StringField(max_length=30)
     password = db.StringField()
 
+class Comment(db.Document):
+    meta = {'collection': 'comments'}
+    plan_id = db.StringField()
+    text = db.StringField()
+    author = db.StringField()
+    date = db.DateTimeField(default=datetime.utcnow)
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.objects(pk=user_id).first()
@@ -59,7 +66,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('index'))
     form = RegForm()
     if request.method == 'POST':
         if form.validate():
@@ -78,12 +85,13 @@ def dashboard(id):
 @app.route('/plan/<id>')
 @login_required
 def plan(id):
-    return render_template('plan.html', tests=[{'Id': 10, 'Name': 'Test3', 'Details': 'OK'}], comments=[{'Author':'Pawel', 'Text': 'It is alright', 'Date': datetime.utcnow().date()}])
+    return render_template('plan.html', tests=[{'Id': 10, 'Name': 'Test3', 'Details': 'OK'}], comments=Comment.objects(plan_id=id), plan_id = id)
 
-@app.route('/tables')
+@app.route('/new-comment/<plan_id>', methods=['POST'])
 @login_required
-def tables():
-    return render_template('tables.html', patients=get_patients(), now=datetime.utcnow().date())
+def new_comment(plan_id):
+    Comment(plan_id=plan_id, author=current_user.email, text=request.form["text"]).save()
+    return redirect(url_for('index'))
 
 @app.route('/')
 def index():
@@ -91,6 +99,11 @@ def index():
         return redirect(url_for('tables'))
     else:
         return redirect(url_for('login'))
+
+@app.route('/tables')
+@login_required
+def tables():
+    return render_template('tables.html', patients=get_patients(), now=datetime.utcnow().date())
 
 @app.route('/forgot-password')
 def forgot_password():
