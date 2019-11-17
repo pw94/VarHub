@@ -75,6 +75,11 @@ def login():
 def dashboard(id):
     return render_template('index.html', patient=get_patient(id), plans=get_patient_plans_ids(id))
 
+@app.route('/plan/<id>')
+@login_required
+def plan(id):
+    return render_template('plan.html', tests=[{'Id': 10, 'Name': 'Test3', 'Details': 'OK'}], comments=[{'Author':'Pawel', 'Text': 'It is alright', 'Date': datetime.utcnow().date()}])
+
 @app.route('/tables')
 @login_required
 def tables():

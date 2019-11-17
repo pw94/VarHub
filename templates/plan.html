@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Plan{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+          <!-- Page Heading -->
+          <h1 class="h3 mb-2 text-gray-800">Plan</h1>
+
+          <h2 class="h5 mb-2 text-gray-800">Tests</h2>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Test name</th>
+                      <th>Details</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>ID</th>
+                      <th>Test name</th>
+                      <th>Details</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    {% for test in tests %}
+                    <tr>
+                      <td>{{test.Id}}</td>
+                      <td>{{test.Name}}</td>
+                      <td>{{test.Details}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <h2 class="h5 mb-2 text-gray-800">Comments</h2>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Comment</th>
+                                <th>Date</th>
+                              </tr>
+                            </thead>
+                            <tfoot>
+                              <tr>
+                                <th>Name</th>
+                                <th>Comment</th>
+                                <th>Date</th>
+                              </tr>
+                            </tfoot>
+                            <tbody>
+                              {% for test in comments %}
+                              <tr>
+                                <td>{{test.Author}}</td>
+                                <td>{{test.Text}}</td>
+                                <td>{{test.Date}}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+          {% endblock %}
+
+          {% block scripts %}
+
+  <!-- Page level plugins -->
+  <script src={{ url_for('static', filename="vendor/datatables/jquery.dataTables.min.js") }}></script>
+  <script src={{ url_for('static', filename="vendor/datatables/dataTables.bootstrap4.min.js") }}></script>
+
+  <!-- Page level custom scripts -->
+  <script src={{ url_for('static', filename="js/demo/datatables-demo.js") }}></script>
+  {% endblock %}
