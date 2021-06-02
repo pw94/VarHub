@@ -20,7 +20,7 @@ pylint==2.4.4
 pymongo==3.9.0
 requests==2.22.0
 six==1.13.0
-urllib3==1.25.7
+urllib3==1.26.5
 Werkzeug==0.16.0
 wrapt==1.11.2
 WTForms==2.2.1
